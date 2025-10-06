@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HARF - Preprocess Corpus</title>
+    <script src="https://unpkg.com/compromise"></script>
+</head>
+<body>
+<h1>HARF - Preprocess Corpus</h1>
+<button id="processBtn">Process Corpus</button>
+<button id="downloadBtn" style="display:none;">Download Heuristics</button>
+<div id="logs"></div>
+
+<script>
+let corpusData = '';
+let heuristics = { importantWords: [], commonPatterns: [] };
+const logsDiv = document.getElementById('logs');
+
+function log(msg){
+    const p = document.createElement('div');
+    p.textContent = msg;
+    logsDiv.appendChild(p);
+}
+
+// Load corpus
+async function loadCorpus() {
+    const categories = {
+        literature: ['Frankenstein.js','MobyDick.js','PrideAndPrejudice.js','TheAdventuresofSherlockHolmes.js','WarAndPeace.js'],
+        science: ['biology.js','THEORYOFCOLOURS.js']
+    };
+
+    for (const [cat, files] of Object.entries(categories)) {
+        for (let f of files) {
+            try {
+                log(`Loading ${cat}/${f}...`);
+                const module = await import(`./corpus/${cat}/${f}`);
+                const varName = f.replace('.js','');
+                corpusData += module[varName] + '\n';
+                log(`${cat}/${f} loaded.`);
+            } catch(e){ log(`Failed to load ${cat}/${f}: ${e}`); }
+        }
+    }
+
+    log('Analyzing corpus...');
+    analyzeCorpus(corpusData);
+    log('Corpus heuristics ready.');
+    document.getElementById('downloadBtn').style.display = 'inline-block';
+}
+
+// Analyze corpus and build heuristics
+function analyzeCorpus(text){
+    const sentences = text.split(/(?<=[.!?])\s+/);
+    const wordFreq = {};
+    const patterns = {};
+
+    sentences.forEach(sentence=>{
+        const words = sentence.match(/\b[\w']+\b/g) || [];
+        words.forEach(w=> wordFreq[w.toLowerCase()] = (wordFreq[w.toLowerCase()]||0)+1 );
+
+        const doc = nlp(sentence);
+        const posPattern = doc.out('tags').map(t=>Object.keys(t)[0]).join(' ');
+        patterns[posPattern] = (patterns[posPattern]||0)+1;
+    });
+
+    heuristics.importantWords = Object.entries(wordFreq)
+        .sort((a,b)=>b[1]-a[1])
+        .slice(0,200)
+        .map(e=>e[0]);
+
+    heuristics.commonPatterns = Object.entries(patterns)
+        .sort((a,b)=>b[1]-a[1])
+        .slice(0,100)
+        .map(e=>e[0]);
+
+    log('Heuristics ready.');
+}
+
+// Download heuristics as JSON
+function downloadHeuristics(){
+    const blob = new Blob([JSON.stringify(heuristics)], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'heuristics.json';
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+document.getElementById('processBtn').addEventListener('click', loadCorpus);
+document.getElementById('downloadBtn').addEventListener('click', downloadHeuristics);
+</script>
+</body>
+</html>

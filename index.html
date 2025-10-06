@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hArf Shorter</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/compromise"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>hArf Shorter ✂️</h1>
+        <p class="tagline">An open-source text trimmer powered by hArf algorithms</p>
+
+        <textarea id="inputText" placeholder="Paste or write your long text here..."></textarea>
+
+        <div class="buttons">
+            <button onclick="summarizeNext()">Summarize Next</button>
+            <button onclick="summarizeBack()">Back</button>
+            <button onclick="resetSummary()">Reset</button>
+        </div>
+
+        <div class="notice">
+            ⚠️ <strong>Note:</strong> The more you shorten the text, the higher the chance of context loss.
+            Effectiveness depends on input size and complexity.
+        </div>
+
+        <div class="logs-container">
+            <h2>Process Logs:</h2>
+            <div id="logs"></div>
+        </div>
+
+        <h2>Output:</h2>
+        <div id="output"></div>
+
+        <footer>
+            <p>Built with ❤️ by <strong>hArf</strong> | Open Source Initiative</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
