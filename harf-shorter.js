@@ -10,7 +10,7 @@ window.hArfShorter = (function() {
     // Load heuristics dynamically from file if available
     async function loadHeuristics() {
         try {
-            const res = await fetch('./heuristics.json');
+            const res = await fetch('/harf-shorter/heuristics.json');
             heuristics = await res.json();
             console.log("hArf Shorter: Heuristics loaded.");
         } catch (e) {
