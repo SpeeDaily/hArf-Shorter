@@ -36,27 +36,33 @@ harf-shorter/ ├── index.html               → main web app
               └── README.md
 ---
 
-## 🔧 Usage
 
-### 🖥️ 1. Use as a Web App
-Visit the live demo:  
-[https://SpeeDaily.github.io/harf-shorter/](https://SpeeDaily.github.io/harf-shorter/)
+## 💡 Usage
 
-Paste your text → click **Summarize Next**.
+### 🖥️ 1. Use as a Web App  
+Visit the live version here:  
+👉 [https://SpeeDaily.github.io/harf-shorter/](https://SpeeDaily.github.io/harf-shorter/)
+
+Paste your text → click **“Summarize Next”** → get condensed summaries instantly.
 
 ---
 
-### 🌎 2. Use as a JS Library
-You can include **hArf** directly in your webpage:
+### 🌎 2. Use as a Library (CDN-style Embed)  
+Use hArf directly in any website — just like Bootstrap Icons or jQuery.
 
 ```html
-<script src="https://SpeeDaily.github.io/hharf-shorter/harf.js"></script>
+<!-- Load the library -->
+<script src="https://SpeeDaily.github.io/harf-shorter/harf.js"></script>
+
+<!-- Then use it -->
 <script>
+  // Load heuristics first
   hArf.loadHeuristics("https://SpeeDaily.github.io/harf-shorter/heuristics.json").then(() => {
     const text = "Alice went to Wonderland. She met the Queen of Hearts. Adventures followed.";
     const summary = hArf.summarize(text);
-    console.log(summary);
+    console.log("Summary:", summary);
   });
 </script>
 
+---
 
