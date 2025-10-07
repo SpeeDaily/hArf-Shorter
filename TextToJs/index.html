@@ -1,0 +1,23 @@
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Text to JS Converter</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Text to JS File Converter</h1>
+
+        <input type="file" id="textFile" accept=".txt">
+        <input type="text" id="variableName" placeholder="Enter JS variable name">
+
+        <button onclick="convertToJS()">Convert & Download</button>
+
+        <h2>Preview:</h2>
+        <pre id="preview"></pre>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
